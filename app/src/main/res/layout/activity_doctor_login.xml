@@ -54,6 +54,19 @@
             android:id="@+id/edtPassword"
             android:inputType="number"/>
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/tvResetPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forget Password?"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold"/>
+
 
     <Button
         android:id="@+id/btnsave"

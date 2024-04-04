@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 class AdminLoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityAdminLoginBinding
     var mAuth = Firebase.auth
+    private val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+[a-z]+"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +24,10 @@ class AdminLoginActivity : AppCompatActivity() {
             if (binding.edtemail.text.isNullOrEmpty()) {
                 binding.tilemail.isErrorEnabled = true
                 binding.tilemail.error = "Enter Email"
-            } else if (binding.edtPassword.text.isNullOrEmpty()) {
+            }else  if (!binding.edtemail.text!!.matches(emailPattern.toRegex())) {
+                binding.edtemail.error = "Enter Valid Email"
+            }
+            else if (binding.edtPassword.text.isNullOrEmpty()) {
                 binding.tilPassword.isErrorEnabled = true
                 binding.tilPassword.error = "Enter password"
             } else {

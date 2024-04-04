@@ -3,6 +3,8 @@ package com.example.doctorprescription.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.doctorprescription.R
 import com.example.doctorprescription.databinding.ActivityDoctorLoginBinding
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 class DoctorLoginActivity : AppCompatActivity() {
     lateinit var binding:ActivityDoctorLoginBinding
     var mAuth = Firebase.auth
+    private val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+[a-z]+"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDoctorLoginBinding.inflate(layoutInflater)
@@ -21,7 +24,9 @@ class DoctorLoginActivity : AppCompatActivity() {
             if (binding.edtemail.text.isNullOrEmpty()) {
                 binding.tilemail.isErrorEnabled = true
                 binding.tilemail.error = "Enter Email"
-            } else if (binding.edtPassword.text.isNullOrEmpty()) {
+            }else if(!binding.edtemail.text!!.matches(emailPattern.toRegex())) {
+                binding.edtemail.error = "Enter Valid Email"
+            }else if (binding.edtPassword.text.isNullOrEmpty()) {
                 binding.tilPassword.isErrorEnabled = true
                 binding.tilPassword.error = "Enter password"
             } else {
@@ -53,6 +58,24 @@ class DoctorLoginActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+        binding.tvResetPassword.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Forget Password ?")
+                .setMessage("Are your sure to change th password.")
+                .setPositiveButton("yes"){_,_->
+                    mAuth.sendPasswordResetEmail(binding.edtemail.text.toString()).addOnCompleteListener {
+                        if(it.isSuccessful){
+                            Toast.makeText(this,"Done sent", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(this,"Error Occurred",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                .setNegativeButton("No"){_,_->
+
+                }
+                .show()
         }
 
     }
